@@ -10,17 +10,17 @@ package com.menusweet;
 public class Item {
 
     String name, description;
-    float price;
+    double price;
     int pictureResId;
 
-    public Item(String name, String description, Float price, int resId) {
+    public Item(String name, String description, double price, int resId) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.pictureResId = resId;
     }
 
-    public Item(String name, String description, Float price) {
+    public Item(String name, String description, double price) {
         this(name, description, price, 0);
     }
 }

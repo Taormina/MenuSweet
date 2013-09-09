@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class UserCart {
 
     ArrayList<CartItem> cartItems;
-    float totalPrice, tax, finalTotal;
+    double totalPrice, tax, finalTotal;
     String email, name;
 
     public UserCart(float tax) {
