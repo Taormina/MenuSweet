@@ -94,6 +94,7 @@ public class UserCart {
         StringBuilder retVal = new StringBuilder();
         for (CartItem i : cartItems) {
             retVal.append(i.toString());
+            retVal.append("\n");
         }
         retVal.append("================\nSubtotal: $");
         retVal.append(totalPrice / 100);

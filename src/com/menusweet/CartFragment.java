@@ -6,14 +6,11 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-/**
- * Created with IntelliJ IDEA.
- * User: GrumpyOwl
- * Date: 9/9/13
- * Time: 6:23 PM
- * To change this template use File | Settings | File Templates.
- */
 public class CartFragment extends Fragment {
 
     public static View view;
@@ -32,9 +29,27 @@ public class CartFragment extends Fragment {
 
         MenuActivity activity = (MenuActivity) this.getActivity();
 
-        if (!activity.isCartEmpty())
-            view.findViewById(R.id.empty_cart_message).setVisibility(View.GONE);
+        if (!activity.isCartEmpty()) {
+            ((TextView) view.findViewById(R.id.empty_cart_message)).setVisibility(View.GONE);
 
+            UserCart cart = activity.userCart;
+            LinearLayout layout = (LinearLayout) view.findViewById(R.id.cart);
+            TextView textView;
+
+            for (CartItem item : cart.cartItems) {
+                textView = new TextView(activity);
+                textView.setText(item.toString());
+                //textView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+                layout.addView(textView);
+            }
+
+            StringBuilder subtotal = new StringBuilder();
+            subtotal.append(cart.totalPrice / 100);
+            subtotal.append(".");
+            subtotal.append(cart.totalPrice % 100);
+            ((TextView) view.findViewById(R.id.subtotal)).setText(subtotal.toString());
+        }
 
         return view;
     }
