@@ -57,13 +57,29 @@ public class UserCart {
         }
     }
 
-    public void addItem(CartItem item) {
-        int index = cartItems.indexOf(item);
-        if (index == -1)
-            cartItems.add(item);
+    public void addItem(Item item, int quantity, String comments) {
+        if (quantity < 1 || item == null) return;
+
+        CartItem newItem = new CartItem(item, quantity, comments);
+        boolean inCart = false;
+        for (CartItem cartItem : cartItems) {
+            if (cartItem.baseItem == item) {
+                newItem = cartItem;
+                inCart = true;
+                break;
+            }
+        }
+
+        if (inCart)
+            newItem.quantity += quantity;
         else
-            cartItems.get(index).quantity += item.quantity;
-        totalPrice += item.baseItem.price * item.quantity;
+            cartItems.add(newItem);
+
+        totalPrice += item.price * quantity;
+    }
+
+    public void addItem(Item item, int quantity) {
+        addItem(item, quantity, "");
     }
 
     public void removeItem(int index) {

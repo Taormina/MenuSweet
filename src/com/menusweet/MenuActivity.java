@@ -34,11 +34,9 @@ public class MenuActivity extends FragmentActivity {
         double tax = 0.07;
 
         userCart = new UserCart(tax);
-        userCart.addItem(new CartItem(first.items.get(0), 1, ""));
-        userCart.addItem(new CartItem(first.items.get(1), 2, ""));
-        userCart.addItem(new CartItem(second.items.get(0), 3, ""));
-        userCart.changeQuantity(0, 3);
-        userCart.removeItem(2);
+        userCart.addItem(first.items.get(0), 1);
+        userCart.addItem(first.items.get(1), 2);
+        userCart.addItem(second.items.get(0), 3);
     }
 
     public boolean isCartEmpty() {
