@@ -2,4 +2,5 @@
 <resources>
     <item name="TAG_ITEM" type="id"/>
     <item name="TAG_QUANTITY" type="id"/>
+    <item name="TAG_INDEX" type="id"/>
 </resources>

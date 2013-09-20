@@ -9,12 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class CartFragment extends Fragment {
 
-    private MenuActivity activity;
     public static View view;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,7 +28,7 @@ public class CartFragment extends Fragment {
             /* Map is already there, just return view as it is */
         }
 
-        activity = (MenuActivity) this.getActivity();
+        MenuActivity activity = (MenuActivity) this.getActivity();
 
         if (!activity.isCartEmpty()) {
             ((TextView) view.findViewById(R.id.empty_cart_message)).setVisibility(View.GONE);
@@ -39,6 +37,7 @@ public class CartFragment extends Fragment {
             LinearLayout layout = (LinearLayout) view.findViewById(R.id.cart);
             TextView textView;
             ImageView addButton, removeButton;
+            int i = 0;
 
             for (CartItem item : cart.cartItems) {
                 textView = new TextView(activity);
@@ -55,7 +54,14 @@ public class CartFragment extends Fragment {
                 addButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
                 layout.addView(addButton);
-                System.out.println("What the fuck");
+
+                removeButton = new ImageView(activity);
+                removeButton.setImageResource(R.drawable.remove_button);
+                removeButton.setTag(R.id.TAG_INDEX, i++);
+                removeButton.setOnClickListener(new RemoveClickListener());
+                removeButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+                layout.addView(removeButton);
             }
 
             StringBuilder subtotal = new StringBuilder();
