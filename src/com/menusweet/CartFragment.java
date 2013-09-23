@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class CartFragment extends Fragment {
 
     public static View view;
@@ -36,7 +38,8 @@ public class CartFragment extends Fragment {
             UserCart cart = activity.userCart;
             LinearLayout layout = (LinearLayout) view.findViewById(R.id.cart);
             TextView textView;
-            ImageView addButton, removeButton;
+            ImageView incrementButton, removeButton, decrementButton;
+            ArrayList<View> views;
             int i = 0;
 
             for (CartItem item : cart.cartItems) {
@@ -46,30 +49,41 @@ public class CartFragment extends Fragment {
 
                 layout.addView(textView);
 
-                addButton = new ImageView(activity);
-                addButton.setImageResource(R.drawable.add_button);
-                addButton.setTag(R.id.TAG_ITEM, item.baseItem);
-                addButton.setTag(R.id.TAG_QUANTITY, 1);
-                addButton.setOnClickListener(new AddClickListener());
-                addButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                incrementButton = new ImageView(activity);
+                incrementButton.setImageResource(R.drawable.add_button);
+                incrementButton.setTag(R.id.TAG_INDEX, i);
+                incrementButton.setOnClickListener(new AddClickListener());
+                incrementButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-                layout.addView(addButton);
+                layout.addView(incrementButton);
+
+                decrementButton = new ImageView(activity);
+                decrementButton.setImageResource(R.drawable.decrement_button);
+                decrementButton.setTag(R.id.TAG_INDEX, i);
+                decrementButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
                 removeButton = new ImageView(activity);
                 removeButton.setImageResource(R.drawable.remove_button);
-                removeButton.setTag(R.id.TAG_INDEX, i++);
-                removeButton.setOnClickListener(new RemoveClickListener());
+                removeButton.setTag(R.id.TAG_INDEX, i);
                 removeButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-                layout.addView(removeButton);
-            }
+                views = new ArrayList<View>();
+                views.add(incrementButton);
+                views.add(textView);
+                views.add(decrementButton);
+                views.add(removeButton);
 
-            StringBuilder subtotal = new StringBuilder();
-            subtotal.append(cart.totalPrice / 100);
-            subtotal.append(".");
-            subtotal.append(cart.totalPrice % 100);
-            ((TextView) view.findViewById(R.id.subtotal)).setText(subtotal.toString());
+                decrementButton.setOnClickListener(new DecrementClickListener(views));
+                removeButton.setOnClickListener(new RemoveClickListener(views));
+
+                layout.addView(decrementButton);
+                layout.addView(removeButton);
+
+                i++;
+            }
         }
+
+        activity.setSubtotal(view);
 
         return view;
     }

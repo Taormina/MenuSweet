@@ -1,5 +1,7 @@
 package com.menusweet;
 
+import android.view.View;
+
 import java.util.ArrayList;
 
 public class UserCart {
@@ -29,13 +31,18 @@ public class UserCart {
                 name.equals(((UserCart) other).name);
     }
 
-    public int numberOf(Item item) {
+    public int numberOf(Item item) {   // TODO unused?
         int index = cartItems.lastIndexOf(item);
         return index == -1 ? 0 : cartItems.get(index).quantity;
     }
 
     public boolean isEmpty() {
-       return cartItems.isEmpty() && totalPrice == 0;
+        int numOfItems = 0;
+
+        for (CartItem item : cartItems)
+            numOfItems += item.quantity;
+
+        return numOfItems == 0 && totalPrice == 0;
     }
 
     void reset() {
@@ -46,10 +53,11 @@ public class UserCart {
         name = "";
     }
 
-    public void changeQuantity(int index, int amount) {
-        if (index < 0 || index >= cartItems.size() || amount < 0) return;
-        if (amount == 0)
-            removeItem(index);
+    public void changeQuantity(int index, int amount, ArrayList<View> cleanupViews) {
+        if (index < 0 || index >= cartItems.size() || amount < 0)
+            return;
+        else if (amount == 0)
+            removeItem(index, cleanupViews);
         else {
             CartItem item = cartItems.get(index);
             totalPrice += (amount - item.quantity) * item.baseItem.price;
@@ -57,8 +65,13 @@ public class UserCart {
         }
     }
 
+    public void testChangeQuantity(int index, int amount) {
+        changeQuantity(index, amount, new ArrayList<View>());
+    }
+
     public void addItem(Item item, int quantity, String comments) {
-        if (quantity < 1 || item == null) return;
+        if (quantity < 1 || item == null)
+            return;
 
         CartItem newItem = new CartItem(item, quantity, comments);
         boolean inCart = false;
@@ -78,16 +91,51 @@ public class UserCart {
         totalPrice += item.price * quantity;
     }
 
-    public void addItem(Item item, int quantity) {
+    public void testAddItem(Item item, int quantity) {
         addItem(item, quantity, "");
     }
 
-    public void removeItem(int index) {
-        if (index < 0 || index >= cartItems.size()) return;
+    public void incrementItem(int index) {
+        if (index < 0 || index >= cartItems.size())
+            return;
+        System.out.println("Incrementing " + index);
+        CartItem item = cartItems.get(index);
+        item.quantity++;
+        totalPrice += item.baseItem.price;
+    }
+
+    public void decrementItem(int index, ArrayList<View> cleanupViews) {
+        if (index < 0 || index >= cartItems.size())
+            return;
+        System.out.println("Decrementing " + index);
+        CartItem item = cartItems.get(index);
+
+        if (--item.quantity == 0)
+            removeItem(index, cleanupViews);
+
+        if (item.quantity >= 0)
+            totalPrice -= item.baseItem.price;
+    }
+
+    public void testDecrementItem(int index) {
+        decrementItem(index, new ArrayList<View>());
+    }
+
+
+    public void removeItem(int index, ArrayList<View> cleanupViews) {
+        if (index < 0 || index >= cartItems.size())
+            return;
+        System.out.println("Removing " + index);
+        for (View view : cleanupViews)
+            view.setVisibility(View.GONE);
 
         CartItem item = cartItems.get(index);
         totalPrice -= item.quantity * item.baseItem.price;
-        cartItems.remove(index);
+        item.quantity = 0;
+    }
+
+    public void testRemoveItem(int index) {
+        removeItem(index, new ArrayList<View>());
     }
 
     public int getTotalPrice() {

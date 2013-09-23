@@ -2,6 +2,7 @@ package com.menusweet;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,13 +35,21 @@ public class MenuActivity extends FragmentActivity {
         double tax = 0.07;
 
         userCart = new UserCart(tax);
-        userCart.addItem(first.items.get(0), 1);
-        userCart.addItem(first.items.get(1), 2);
-        userCart.addItem(second.items.get(0), 3);
+        userCart.testAddItem(first.items.get(0), 1);
+        userCart.testAddItem(first.items.get(1), 2);
+        userCart.testAddItem(second.items.get(0), 3);
     }
 
     public boolean isCartEmpty() {
         return userCart.isEmpty();
+    }
+
+    public void setSubtotal(View view) {
+        StringBuilder subtotal = new StringBuilder();
+        subtotal.append(userCart.totalPrice / 100);
+        subtotal.append(".");
+        subtotal.append(userCart.totalPrice % 100);
+        ((TextView) view.findViewById(R.id.subtotal)).setText(subtotal.toString());
     }
 
     public void print() {
