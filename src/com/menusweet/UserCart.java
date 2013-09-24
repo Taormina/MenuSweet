@@ -1,8 +1,9 @@
 package com.menusweet;
 
-import android.view.View;
-
 import java.util.ArrayList;
+import java.util.List;
+
+import android.view.View;
 
 public class UserCart {
 
@@ -16,7 +17,10 @@ public class UserCart {
         cartItems = new ArrayList<CartItem>();
         reset();
     }
-
+    public List getList(){
+    	return (List) cartItems.clone();
+    }
+    	
     public boolean equals(Object other) {
         if (other == null) return false;
         if (other == this) return true;
