@@ -52,6 +52,10 @@ public class MenuActivity extends FragmentActivity {
         ((TextView) view.findViewById(R.id.subtotal)).setText(subtotal.toString());
     }
 
+    public void setIntText(TextView textView, int i) {
+        textView.setText(Integer.toString(i));
+    }
+
     public void print() {
 
     }

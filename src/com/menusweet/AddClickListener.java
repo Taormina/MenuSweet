@@ -1,12 +1,17 @@
 package com.menusweet;
 
 import android.view.View;
+import android.widget.TextView;
 
-public class AddClickListener implements View.OnClickListener {
+public class AddClickListener extends ClickListener {
 
-    public void onClick(View v) {
-        MenuActivity activity = (MenuActivity) v.getContext();
-        activity.userCart.incrementItem((Integer) v.getTag(R.id.TAG_INDEX));
-        activity.setSubtotal(v.getRootView());
+    private TextView quantity;
+
+    public AddClickListener(TextView quantity) {
+      this.quantity = quantity;
+    }
+
+    public void doAction(View v) {
+        activity.setIntText(quantity, activity.userCart.incrementItem((Integer) v.getTag(R.id.TAG_INDEX)));
     }
 }

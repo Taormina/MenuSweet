@@ -4,7 +4,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-public class RemoveClickListener implements View.OnClickListener{
+public class RemoveClickListener extends ClickListener {
 
     private ArrayList<View> views;
 
@@ -12,9 +12,8 @@ public class RemoveClickListener implements View.OnClickListener{
         this.views = views;
     }
 
-    public void onClick(View v) {
-        MenuActivity activity = (MenuActivity) v.getContext();
+    @Override
+    public void doAction(View v) {
         activity.userCart.removeItem((Integer) v.getTag(R.id.TAG_INDEX), views);
-        activity.setSubtotal(v.getRootView());
     }
 }

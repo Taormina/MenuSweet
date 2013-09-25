@@ -37,22 +37,28 @@ public class CartFragment extends Fragment {
 
             UserCart cart = activity.userCart;
             LinearLayout layout = (LinearLayout) view.findViewById(R.id.cart);
-            TextView textView;
+            TextView textView, itemAmount;
             ImageView incrementButton, removeButton, decrementButton;
             ArrayList<View> views;
             int i = 0;
 
             for (CartItem item : cart.cartItems) {
                 textView = new TextView(activity);
-                textView.setText(item.toString());
+                textView.setText(item.baseItem.name);
                 textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
                 layout.addView(textView);
 
+                itemAmount = new TextView(activity);
+                activity.setIntText(itemAmount, item.quantity);
+                itemAmount.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+                layout.addView(itemAmount);
+
                 incrementButton = new ImageView(activity);
                 incrementButton.setImageResource(R.drawable.add_button);
                 incrementButton.setTag(R.id.TAG_INDEX, i);
-                incrementButton.setOnClickListener(new AddClickListener());
+                incrementButton.setOnClickListener(new AddClickListener(itemAmount));
                 incrementButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
                 layout.addView(incrementButton);
@@ -68,12 +74,13 @@ public class CartFragment extends Fragment {
                 removeButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
                 views = new ArrayList<View>();
-                views.add(incrementButton);
                 views.add(textView);
+                views.add(itemAmount);
+                views.add(incrementButton);
                 views.add(decrementButton);
                 views.add(removeButton);
 
-                decrementButton.setOnClickListener(new DecrementClickListener(views));
+                decrementButton.setOnClickListener(new DecrementClickListener(views, itemAmount));
                 removeButton.setOnClickListener(new RemoveClickListener(views));
 
                 layout.addView(decrementButton);

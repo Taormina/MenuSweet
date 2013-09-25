@@ -35,9 +35,11 @@ public class UserCart {
                 name.equals(((UserCart) other).name);
     }
 
-    public int numberOf(Item item) {   // TODO unused?
-        int index = cartItems.lastIndexOf(item);
-        return index == -1 ? 0 : cartItems.get(index).quantity;
+    public int numberOf(int index) {
+        if (index < 0 || index >= cartItems.size())
+            throw new IndexOutOfBoundsException();
+
+        return cartItems.get(index).quantity;
     }
 
     public boolean isEmpty() {
@@ -58,8 +60,10 @@ public class UserCart {
     }
 
     public void changeQuantity(int index, int amount, ArrayList<View> cleanupViews) {
-        if (index < 0 || index >= cartItems.size() || amount < 0)
-            return;
+        if (index < 0 || index >= cartItems.size())
+            throw new IndexOutOfBoundsException();
+        else if (amount < 0)
+            throw new IllegalArgumentException("Items can't have a negative quantity.");
         else if (amount == 0)
             removeItem(index, cleanupViews);
         else {
@@ -74,8 +78,10 @@ public class UserCart {
     }
 
     public void addItem(Item item, int quantity, String comments) {
-        if (quantity < 1 || item == null)
-            return;
+        if (quantity < 1)
+            throw new IllegalArgumentException("Items can't have a negative or zero quantity while being added.");
+        if (item == null)
+            throw new NullPointerException();
 
         CartItem newItem = new CartItem(item, quantity, comments);
         boolean inCart = false;
@@ -99,37 +105,41 @@ public class UserCart {
         addItem(item, quantity, "");
     }
 
-    public void incrementItem(int index) {
+    public int incrementItem(int index) {
         if (index < 0 || index >= cartItems.size())
-            return;
-        System.out.println("Incrementing " + index);
+            throw new IndexOutOfBoundsException();
+
         CartItem item = cartItems.get(index);
         item.quantity++;
         totalPrice += item.baseItem.price;
+        return item.quantity;
     }
 
-    public void decrementItem(int index, ArrayList<View> cleanupViews) {
+    public int decrementItem(int index, ArrayList<View> cleanupViews) {
         if (index < 0 || index >= cartItems.size())
-            return;
-        System.out.println("Decrementing " + index);
+            throw new IndexOutOfBoundsException();
         CartItem item = cartItems.get(index);
+
+        if (item.quantity == 0)
+            throw new IllegalArgumentException("You can't have negative items.");
 
         if (--item.quantity == 0)
             removeItem(index, cleanupViews);
 
         if (item.quantity >= 0)
             totalPrice -= item.baseItem.price;
+
+        return item.quantity;
     }
 
-    public void testDecrementItem(int index) {
-        decrementItem(index, new ArrayList<View>());
+    public int testDecrementItem(int index) {
+        return decrementItem(index, new ArrayList<View>());
     }
 
 
     public void removeItem(int index, ArrayList<View> cleanupViews) {
         if (index < 0 || index >= cartItems.size())
-            return;
-        System.out.println("Removing " + index);
+            throw new IndexOutOfBoundsException();
         for (View view : cleanupViews)
             view.setVisibility(View.GONE);
 

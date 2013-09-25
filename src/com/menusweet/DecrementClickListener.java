@@ -1,20 +1,21 @@
 package com.menusweet;
 
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class DecrementClickListener implements View.OnClickListener{
+public class DecrementClickListener extends ClickListener {
 
     private ArrayList<View> views;
+    private TextView quantity;
 
-    public DecrementClickListener(ArrayList<View> views) {
+    public DecrementClickListener(ArrayList<View> views, TextView quantity) {
         this.views = views;
+        this.quantity = quantity;
     }
 
-    public void onClick(View v) {
-        MenuActivity activity = (MenuActivity) v.getContext();
-        activity.userCart.decrementItem((Integer) v.getTag(R.id.TAG_INDEX), views);
-        activity.setSubtotal(v.getRootView());
+    public void doAction(View v) {
+        activity.setIntText(quantity, activity.userCart.decrementItem((Integer) v.getTag(R.id.TAG_INDEX), views));
     }
 }

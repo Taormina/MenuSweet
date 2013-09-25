@@ -1,4 +1,4 @@
-package com.menusweet.com.menusweet.test;
+package com.menusweet.test;
 
 import com.menusweet.Item;
 import com.menusweet.UserCart;
@@ -20,6 +20,7 @@ public class UserCartTest extends TestCase {
     public void testAddItem() {
 
         int cost;
+        boolean caughtException;
         UserCart cart = new UserCart(0.07);
         assertTrue("The cart is not properly initialized.", cart.isEmpty());
 
@@ -36,13 +37,31 @@ public class UserCartTest extends TestCase {
         cost += 3 * softDrink.getPrice();
         assertEquals("The subtotal was not updated correctly when 3 new items were added.", cart.getTotalPrice(), cost);
 
-        cart.testAddItem(null, 3);
+        caughtException = false;
+        try {
+            cart.testAddItem(null, 3);
+        }  catch (NullPointerException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when given a null value.", caughtException);
         assertEquals("The subtotal was updated when a null parameter is passed to testAddItem.", cart.getTotalPrice(), cost);
 
-        cart.testAddItem(softDrink, -3);
+        caughtException = false;
+        try {
+            cart.testAddItem(softDrink, -3);
+        }  catch (IllegalArgumentException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when given a null value.", caughtException);
         assertEquals("The subtotal was updated when an invalid parameter is passed to testAddItem.", cart.getTotalPrice(), cost);
 
-        cart.testAddItem(null, -3);
+        caughtException = false;
+        try {
+            cart.testAddItem(null, -3);
+        }  catch (IllegalArgumentException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when multiple invalid parameters are passed to testAddItem.", caughtException);
         assertEquals("The subtotal was updated when multiple invalid parameters are passed to testAddItem.", cart.getTotalPrice(), cost);
 
     }
@@ -50,6 +69,7 @@ public class UserCartTest extends TestCase {
     public void testChangeQuantity() {
 
         int cost;
+        boolean caughtException;
         UserCart cart = new UserCart(0.07);
         assertTrue("The cart is not properly initialized.", cart.isEmpty());
 
@@ -68,16 +88,40 @@ public class UserCartTest extends TestCase {
         assertEquals("The subtotal was not updated correctly when 2 chicken curries were removed.", cart.getTotalPrice(), cost);
         assertFalse("The cart is empty when it shouldn't be.", cart.isEmpty());
 
-        cart.testChangeQuantity(-1, -1);
+        caughtException = false;
+        try {
+            cart.testChangeQuantity(-1, -1);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when given negative parameters.", caughtException);
         assertEquals("Nothing should change on negative parameters given to testChangeQuantity.", cart.getTotalPrice(), cost);
 
-        cart.testChangeQuantity(-1, 1);
+        caughtException = false;
+        try {
+            cart.testChangeQuantity(-1, 1);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when given a negative index.", caughtException);
         assertEquals("Nothing should change on a negative index given to testChangeQuantity.", cart.getTotalPrice(), cost);
 
-        cart.testChangeQuantity(1, -1);
+        caughtException = false;
+        try {
+            cart.testChangeQuantity(1, -1);
+        }  catch (IllegalArgumentException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when given a negative amount.", caughtException);
         assertEquals("Nothing should change on a negative amount given to testChangeQuantity.", cart.getTotalPrice(), cost);
 
-        cart.testChangeQuantity(5, 17);
+        caughtException = false;
+        try {
+            cart.testChangeQuantity(5, 17);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when given too large of an index.", caughtException);
         assertEquals("Nothing should change on indexOutOfBounds with testChangeQuantity.", cart.getTotalPrice(), cost);
 
     }
@@ -85,6 +129,7 @@ public class UserCartTest extends TestCase {
     public void testRemoveItem() {
 
         int cost;
+        boolean caughtException;
         UserCart cart = new UserCart(0.07);
         assertTrue("The cart is not properly initialized.", cart.isEmpty());
 
@@ -99,10 +144,22 @@ public class UserCartTest extends TestCase {
         cost = cost - (3 * softDrink.getPrice()) + (3 * water.getPrice());
         assertEquals("The subtotal was not updated correctly when swapping the soft drinks for water.", cart.getTotalPrice(), cost);
 
-        cart.testRemoveItem(-1);
+        caughtException = false;
+        try {
+            cart.testRemoveItem(-1);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when given a negative index.", caughtException);
         assertEquals("Nothing should change on a negative index given to testRemoveItem.", cart.getTotalPrice(), cost);
 
-        cart.testRemoveItem(5);
+        caughtException = false;
+        try {
+            cart.testRemoveItem(5);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("Did not throw the correct exception when given too large of an index.", caughtException);
         assertEquals("Nothing should change on indexOutOfBounds with testRemoveItem.", cart.getTotalPrice(), cost);
 
         cart.testRemoveItem(0); // chickenCurry
@@ -125,52 +182,115 @@ public class UserCartTest extends TestCase {
     public void testIncrementItem() {
 
         int cost;
+        boolean caughtException;
         UserCart cart = new UserCart(0.07);
         assertTrue("The cart is not properly initialized.", cart.isEmpty());
 
         cart.testAddItem(chickenCurry, 1);
         cost = chickenCurry.getPrice();
 
-        cart.incrementItem(0);
+        assertEquals("The quantity was not updated correctly when item was first incremented.", cart.incrementItem(0), 2);
         cost += chickenCurry.getPrice();
         assertEquals("The subtotal was not updated correctly when item was first incremented.", cart.getTotalPrice(), cost);
 
-        cart.incrementItem(0);
+        assertEquals("The quantity was not updated correctly when item was incremented again.", cart.incrementItem(0), 3);
         cost += chickenCurry.getPrice();
         assertEquals("The subtotal was not updated correctly when item was incremented again.", cart.getTotalPrice(), cost);
 
-        cart.incrementItem(3);
+        caughtException = false;
+        try {
+            cart.incrementItem(3);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+
+        assertTrue("An exception was not thrown when too large of a index was passed in.", caughtException);
         assertEquals("The subtotal was updated when too large of a index was passed in.", cart.getTotalPrice(), cost);
 
-        cart.incrementItem(-1);
+        caughtException = false;
+        try {
+            cart.incrementItem(-1);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("An exception was not thrown when a negative index was passed in.", caughtException);
         assertEquals("The subtotal was updated when a negative index was passed in.", cart.getTotalPrice(), cost);
     }
 
     public void testDecrementItem() {
 
         int cost;
+        boolean caughtException;
         UserCart cart = new UserCart(0.07);
         assertTrue("The cart is not properly initialized.", cart.isEmpty());
 
         cart.testAddItem(chickenCurry, 2);
         cost = chickenCurry.getPrice() * 2;
 
-        cart.testDecrementItem(0);
+        assertEquals("The quantity was not updated correctly when item was first decremented.", cart.testDecrementItem(0), 1);
         cost -= chickenCurry.getPrice();
         assertEquals("The subtotal was not updated correctly when item was first decremented.", cart.getTotalPrice(), cost);
 
-        cart.testDecrementItem(0);
+        assertEquals("The quantity was not updated correctly when item was decremented again.", cart.testDecrementItem(0), 0);
         cost -= chickenCurry.getPrice();
         assertEquals("The subtotal was not updated correctly when item was decremented again.", cart.getTotalPrice(), cost);
         assertTrue("The cart should be empty.", cart.isEmpty());
 
-        cart.testDecrementItem(3);
+        caughtException = false;
+        try {
+            cart.testDecrementItem(3);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("An exception was not thrown when too large of a index was passed in.", caughtException);
         assertEquals("The subtotal was updated when too large of a index was passed in.", cart.getTotalPrice(), cost);
 
-        cart.testDecrementItem(0);
+        caughtException = false;
+        try {
+            cart.testDecrementItem(0);
+        }  catch (IllegalArgumentException e) {
+            caughtException = true;
+        }
+        assertTrue("An exception was not thrown when a removed item is decremented.", caughtException);
+        assertEquals("The quantity was updated when there was a item at that index with 0 quantity.", cart.numberOf(0), 0);
         assertEquals("The subtotal was updated when there was a item at that index with 0 quantity.", cart.getTotalPrice(), cost);
 
-        cart.testDecrementItem(-1);
+        caughtException = false;
+        try {
+            cart.testDecrementItem(-1);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("An exception was not thrown when a negative index was passed in.", caughtException);
         assertEquals("The subtotal was updated when a negative index was passed in.", cart.getTotalPrice(), cost);
+    }
+
+    public void testNumberOf() {
+
+        boolean caughtException;
+        UserCart cart = new UserCart(0.07);
+        assertTrue("The cart is not properly initialized.", cart.isEmpty());
+
+        cart.testAddItem(chickenCurry, 2);
+        assertEquals("The quantity was not updated correctly when item was first added.", cart.numberOf(0), 2);
+
+
+        caughtException = false;
+        try {
+            cart.numberOf(3);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("The quantity did not throw an exception when too large of an index is given.", caughtException);
+
+        caughtException = false;
+        try {
+            cart.numberOf(-1);
+        }  catch (IndexOutOfBoundsException e) {
+            caughtException = true;
+        }
+        assertTrue("The quantity did not throw an exception when a negative index is given.", caughtException);
+
+
     }
 }
