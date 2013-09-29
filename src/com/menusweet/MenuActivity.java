@@ -17,6 +17,7 @@ public class MenuActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        getSupportFragmentManager().beginTransaction().add(R.id.menu, new CategoryFragment()).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.menu, new CartFragment()).commit();
 
         initialize();
@@ -31,6 +32,9 @@ public class MenuActivity extends FragmentActivity {
         first.addItem(new Item("Tofu Curry", "Its a curry. With tofu. For vegetarians I guess", 999));
         second.addItem(new Item("Tap Water", "Comes with free ice!", 0));
         second.addItem(new Item("Soft Drink", "Everything else", 199));
+        categories.add(first);
+        categories.add(second);
+
 
         double tax = 0.07;
 

@@ -2,13 +2,6 @@ package com.menusweet;
 
 import java.util.ArrayList;
 
-/**
- * Created with IntelliJ IDEA.
- * User: GrumpyOwl
- * Date: 9/6/13
- * Time: 2:10 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Category {
 
     String name;
@@ -21,8 +14,13 @@ public class Category {
         items = new ArrayList<Item>();
     }
 
-    void addItem(Item newItem) {
+    public void addItem(Item newItem) {
         items.add(newItem);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 }
