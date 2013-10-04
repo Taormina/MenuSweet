@@ -1,17 +1,23 @@
 package com.menusweet;
 
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class AddClickListener extends ClickListener {
 
-    private TextView quantity;
+    private Item item;
+    private int quantity;
 
-    public AddClickListener(TextView quantity) {
-      this.quantity = quantity;
+    public AddClickListener(Item item, int quantity) {
+        this.item = item;
+        this.quantity = quantity;
     }
 
     public void doAction(View v) {
-        activity.setIntText(quantity, activity.userCart.incrementItem((Integer) v.getTag(R.id.TAG_INDEX)));
+        activity.userCart.addItem(item, quantity, "");
+        LinearLayout layout = (LinearLayout) v.getRootView().findViewById(R.id.cart);
     }
+
+
 }

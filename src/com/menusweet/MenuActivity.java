@@ -3,6 +3,7 @@ package com.menusweet;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,8 +18,7 @@ public class MenuActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.menu, new CategoryFragment()).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.menu, new CartFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.main, new MenuFragment()).commit();
 
         initialize();
     }

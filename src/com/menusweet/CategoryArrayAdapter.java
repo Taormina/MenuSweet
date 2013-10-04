@@ -1,55 +1,42 @@
 package com.menusweet;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class CategoryArrayAdapter<Category> extends ArrayAdapter<Category> {
+public class CategoryArrayAdapter extends ArrayAdapter<Category> {
 
     MenuActivity activity;
+    List<Category> categoryList;
 
-    public CategoryArrayAdapter(Context context, int textViewResourceId, List<Category> objects) {
-        super(context, textViewResourceId, objects);
-        this.activity = (MenuActivity) context;
-    }
-
-    /*private view holder class*/
-   /*private class ViewHolder {
-        ImageView imageView;
-        TextView txtMenuName;
-        TextView txtMenuDesc;
-        TextView txtPrice;
+    public CategoryArrayAdapter(MenuActivity activity, List<Category> objects) {
+        super(activity, R.layout.category_row, objects);
+        this.activity = activity;
+        this.categoryList = objects;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
-       // Menu rowItem = getItem(position);
+        //ViewHolder holder = null;
+        Category rowItem = getItem(position);
 
         LayoutInflater mInflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_row, null);
-            holder = new ViewHolder();
-            holder.txtMenuName = (TextView) convertView.findViewById(R.id.menu_name);
-            holder.txtMenuDesc = (TextView) convertView.findViewById(R.id.description);
-            holder.txtPrice = (TextView) convertView.findViewById(R.id.price);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.list_image);
-            convertView.setTag(holder);
-        }  else
-            holder = (ViewHolder) convertView.getTag();
+            convertView = mInflater.inflate(R.layout.category_row, null);
+            ((TextView) convertView.findViewById(R.id.category_name)).setText(rowItem.toString());
 
-        holder.txtMenuDesc.setText(rowItem.getDescription());
-        holder.txtMenuName.setText(rowItem.getName());
-        holder.txtPrice.setText(String.valueOf(rowItem.getPrice()) + " TL");
-        //holder.imageView.setImageResource(rowItem.getImageId());
+        }
+
+        AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+        convertView.setLayoutParams(params);
 
         return convertView;
-    }   */
+
+    }
 
 }
