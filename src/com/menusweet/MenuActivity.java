@@ -17,7 +17,7 @@ public class MenuActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.menu, new CartFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.menu, new IntroScreenFragment()).commit();
 
         initialize();
     }
