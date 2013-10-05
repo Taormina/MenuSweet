@@ -20,6 +20,11 @@ public class UserCart {
     public List getList(){
     	return (List) cartItems.clone();
     }
+
+    public CartItem getLast() {
+        int size = cartItems.size();
+        return size > 0 ? cartItems.get(size - 1) : null;
+    }
     	
     public boolean equals(Object other) {
         if (other == null) return false;
@@ -77,7 +82,7 @@ public class UserCart {
         changeQuantity(index, amount, new ArrayList<View>());
     }
 
-    public void addItem(Item item, int quantity, String comments) {
+    public boolean addItem(Item item, int quantity, String comments) {
         if (quantity < 1)
             throw new IllegalArgumentException("Items can't have a negative or zero quantity while being added.");
         if (item == null)
@@ -99,6 +104,7 @@ public class UserCart {
             cartItems.add(newItem);
 
         totalPrice += item.price * quantity;
+        return inCart;
     }
 
     public void testAddItem(Item item, int quantity) {

@@ -15,8 +15,8 @@ public class AddClickListener extends ClickListener {
     }
 
     public void doAction(View v) {
-        activity.userCart.addItem(item, quantity, "");
-        LinearLayout layout = (LinearLayout) v.getRootView().findViewById(R.id.cart);
+        if (!activity.userCart.addItem(item, quantity, ""))
+            activity.addGraphicallyToCart(activity.userCart.getLast());
     }
 
 
