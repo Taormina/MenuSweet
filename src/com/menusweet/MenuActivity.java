@@ -1,9 +1,11 @@
 package com.menusweet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -38,6 +40,10 @@ public class MenuActivity extends FragmentActivity {
         userCart.testAddItem(first.items.get(0), 1);
         userCart.testAddItem(first.items.get(1), 2);
         userCart.testAddItem(second.items.get(0), 3);
+        userCart.name = "Anthony";
+        userCart.email = "gaeljudicium@aol.com";
+
+        email();
     }
 
     public boolean isCartEmpty() {
@@ -60,8 +66,17 @@ public class MenuActivity extends FragmentActivity {
 
     }
 
-    public void email() {
-
+    public void email() {  // Only call this when we have an email and name
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{userCart.email});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Lucky Buddha Receipt");
+        i.putExtra(Intent.EXTRA_TEXT   , "Hey" + userCart.name + ",\n" + userCart);
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void sendFeedback() {
