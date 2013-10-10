@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MenuFragment extends Fragment {
 
     public static View view;
@@ -35,10 +38,13 @@ public class MenuFragment extends Fragment {
         // Category
         ListView categoryList = (ListView) activity.findViewById(R.id.categories);
         categoryList.setAdapter(new CategoryArrayAdapter(activity, activity.categories));
+        categoryList.setOnItemClickListener(new CategoryClickListener(activity.categories));
 
         // Items
         ListView itemList = (ListView) activity.findViewById(R.id.items);
-        itemList.setAdapter(new ItemArrayAdapter(activity, activity.categories.get(0).items));
+        ArrayList<Item> categoryItems = new ArrayList<Item>();
+        categoryItems.addAll(activity.categories.get(0).items);
+        itemList.setAdapter(new ItemArrayAdapter(activity, categoryItems));
 
         if (!activity.isCartEmpty()) {
             view.findViewById(R.id.empty_cart_message).setVisibility(View.GONE);

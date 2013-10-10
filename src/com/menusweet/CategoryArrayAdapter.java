@@ -29,14 +29,12 @@ public class CategoryArrayAdapter extends ArrayAdapter<Category> {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.category_row, null);
             ((TextView) convertView.findViewById(R.id.category_name)).setText(rowItem.toString());
-
         }
 
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
         convertView.setLayoutParams(params);
 
         return convertView;
-
     }
 
 }

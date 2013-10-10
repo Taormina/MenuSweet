@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dip" >
+    android:padding="5dip"
+    android:clickable="false"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="false"
+    android:focusableInTouchMode="false" >
 
     <!-- ListRow Left side Thumbnail image -->
 
@@ -20,7 +24,8 @@
                 android:id="@+id/list_image"
                 android:layout_width="50dip"
                 android:layout_height="50dip"
-                android:contentDescription=""/>
+                android:contentDescription=""
+                android:src="@drawable/add_button"/>
     </LinearLayout>
 
     <!-- Menu name -->

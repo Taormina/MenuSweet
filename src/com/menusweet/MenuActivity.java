@@ -29,14 +29,18 @@ public class MenuActivity extends FragmentActivity {
         categories = new ArrayList<Category>();
         Category first = new Category("Food", false);
         Category second = new Category("Drink", false);
+        suggestions = new Category("Suggestions", false);
         first.addItem(new Item("Chicken Curry", "Its a curry. With chicken", 999));
         first.addItem(new Item("Beef Curry", "Its a curry. With beef", 999));
         first.addItem(new Item("Tofu Curry", "Its a curry. With tofu. For vegetarians I guess", 999));
         second.addItem(new Item("Tap Water", "Comes with free ice!", 0));
         second.addItem(new Item("Soft Drink", "Everything else", 199));
+        suggestions.addItem(new Item("Chicken Curry", "Its a curry. With chicken", 999));
+        suggestions.addItem(new Item("Tap Water", "Comes with free ice!", 0));
+        suggestions.addItem(new Item("Soft Drink", "Everything else", 199));
         categories.add(first);
         categories.add(second);
-
+        categories.add(suggestions);
 
         double tax = 0.07;
 
