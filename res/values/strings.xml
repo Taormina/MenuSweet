@@ -3,7 +3,8 @@
     <string name="app_name">MenuSweet</string>
 
     <string name="store_email">gaeljudicium@aol.com</string>
-    <string name="our_email">anthony.m.taormina@gmail.com</string>
+    <string name="our_email">contact.menusweet@gmail.com</string>
+    <string name="password">ilikecake</string>
     <string name="feedback_subject">Feedback</string>
 
     <string name="feedback_message">We love feedback!</string>

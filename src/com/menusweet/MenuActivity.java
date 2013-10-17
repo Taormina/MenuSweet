@@ -1,11 +1,12 @@
 package com.menusweet;
 
-import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.menusweet.mailsender.GMailSender;
 
 import java.util.ArrayList;
 
@@ -67,15 +68,16 @@ public class MenuActivity extends FragmentActivity {
     }
 
     public void email(String email, String subject, String message) {  // Only call this when we have an email and name
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});
-        i.putExtra(Intent.EXTRA_SUBJECT, subject);
-        i.putExtra(Intent.EXTRA_TEXT   , message);
         try {
-            startActivity(Intent.createChooser(i, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            Resources res = getResources();
+            String ourEmail = res.getString(R.string.our_email);
+            GMailSender sender = new GMailSender(ourEmail, res.getString(R.string.password));
+            sender.sendMail(subject,
+                    message,
+                    ourEmail,
+                    email);
+        } catch (Exception e) {
+            Log.e("SendMail", e.getMessage(), e);
         }
     }
 }
