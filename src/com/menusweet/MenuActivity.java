@@ -19,7 +19,7 @@ public class MenuActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.menu, new IntroScreenFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.menu, new FeedbackFragment()).commit();
 
         initialize();
     }
@@ -43,7 +43,7 @@ public class MenuActivity extends FragmentActivity {
         userCart.name = "Anthony";
         userCart.email = "gaeljudicium@aol.com";
 
-        email();
+        //email();
     }
 
     public boolean isCartEmpty() {
@@ -66,20 +66,16 @@ public class MenuActivity extends FragmentActivity {
 
     }
 
-    public void email() {  // Only call this when we have an email and name
+    public void email(String email, String subject, String message) {  // Only call this when we have an email and name
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{userCart.email});
-        i.putExtra(Intent.EXTRA_SUBJECT, "Lucky Buddha Receipt");
-        i.putExtra(Intent.EXTRA_TEXT   , "Hey" + userCart.name + ",\n" + userCart);
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});
+        i.putExtra(Intent.EXTRA_SUBJECT, subject);
+        i.putExtra(Intent.EXTRA_TEXT   , message);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void sendFeedback() {
-
     }
 }
