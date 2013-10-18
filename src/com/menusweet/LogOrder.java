@@ -42,17 +42,17 @@ public class LogOrder {
 
 	public boolean logOrder(UserCart cart){
 		JSONArray orders_json = readJSON(filename);
+		if(orders_json==null){
+			orders_json = new JSONArray();
+		}
 		JSONObject order_json = orderToJSON(cart.getList());
 		orders_json.put(order_json);
 		return saveJSON(orders_json);
 	}
 	
-	// returns JSONObject of the order based on UserCart
 	public JSONObject orderToJSON(List<CartItem> listorders) {
 		// probably sort it somehow by price, category, or alphabetically
-		// java.util.Collections.
-		// CartItem[] arrorders = listorders.toArray();
-		// sort(arrorders)
+		// sort(listorders)
 		JSONObject order = new JSONObject();
 		JSONArray orderarr = new JSONArray();
 		try {
@@ -130,10 +130,11 @@ public class LogOrder {
 			return null;
 		}
 	}
+	
 	private void sendOrders(JSONArray order){
 		//StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		//StrictMode.setThreadPolicy(policy);
-				
+
 		String result = "";
 	    try {
 	        HttpParams httpParams = new BasicHttpParams();
