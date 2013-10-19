@@ -3,12 +3,12 @@ package com.menusweet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Suggestion {
+public class XMLParser {
 	public static void main(String[] args) {
-		Suggestion g = new Suggestion();
+		XMLParser g = new XMLParser();
 	}
 	private List<Item> menuitems;
-	public Suggestion(){
+	public XMLParser(){
 		//List of all menu items
 		this.menuitems = new ArrayList<Item>();
 	}
