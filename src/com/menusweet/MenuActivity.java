@@ -1,6 +1,7 @@
 package com.menusweet;
 
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -67,17 +68,30 @@ public class MenuActivity extends FragmentActivity {
 
     }
 
-    public void email(String email, String subject, String message) {  // Only call this when we have an email and name
-        try {
+    public void email(String email, String subject, String message) {
+
+            new EmailOperation().execute(email, subject, message);
+    }
+
+    private class EmailOperation extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String email = params[0], subject = params[1], message = params[2];
             Resources res = getResources();
             String ourEmail = res.getString(R.string.our_email);
             GMailSender sender = new GMailSender(ourEmail, res.getString(R.string.password));
-            sender.sendMail(subject,
+            try {
+                sender.sendMail(subject,
                     message,
                     ourEmail,
                     email);
-        } catch (Exception e) {
-            Log.e("SendMail", e.getMessage(), e);
+            } catch (Exception e) {
+                Log.e("SendMail", e.getMessage(), e);
+            }
+            return null;
         }
     }
+
 }
