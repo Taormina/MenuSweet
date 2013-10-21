@@ -17,6 +17,10 @@ public class AddClickListener extends ClickListener {
     public void doAction(View v) {
         if (!activity.userCart.addItem(item, quantity, ""))
             activity.addGraphicallyToCart(activity.userCart.getLast());
+
+        View emptyCartMessage = v.getRootView().findViewById(R.id.empty_cart_message);
+        if (emptyCartMessage.getVisibility() != View.GONE)
+            emptyCartMessage.setVisibility(View.GONE);
     }
 
 
