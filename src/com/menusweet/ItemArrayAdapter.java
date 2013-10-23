@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         txtPrice.setText(String.valueOf("$" + rowItem.price / 100 + "." + rowItem.price % 100));
         //imageView.setImageResource(rowItem.pictureResId);
 
-        convertView.setOnClickListener(new AddClickListener(rowItem, 1));
+        convertView.setTag(R.id.TAG_ITEM, rowItem);
 
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
         convertView.setLayoutParams(params);

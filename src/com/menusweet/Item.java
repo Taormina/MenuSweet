@@ -27,4 +27,19 @@ public class Item {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (pictureResId != item.pictureResId) return false;
+        if (price != item.price) return false;
+        if (!description.equals(item.description)) return false;
+        if (!name.equals(item.name)) return false;
+
+        return true;
+    }
 }

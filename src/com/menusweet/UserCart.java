@@ -3,8 +3,6 @@ package com.menusweet;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.view.View;
-
 public class UserCart {
 
     ArrayList<CartItem> cartItems;
@@ -12,18 +10,23 @@ public class UserCart {
     double tax;
     String email, name;
 
-    public UserCart(double tax) {
+    public UserCart(double tax, ArrayList<Item> items) {
         this.tax = tax;
         cartItems = new ArrayList<CartItem>();
+        for (Item item : items)
+            cartItems.add(new CartItem(item, 0, ""));
         reset();
     }
+
     public List getList(){
     	return (List) cartItems.clone();
     }
 
-    public CartItem getLast() {
-        int size = cartItems.size();
-        return size > 0 ? cartItems.get(size - 1) : null;
+    public CartItem getItem(int index) {
+        if (index < 0 || index >= cartItems.size())
+            throw new IndexOutOfBoundsException();
+
+        return cartItems.get(index);
     }
     	
     public boolean equals(Object other) {
@@ -32,12 +35,12 @@ public class UserCart {
         if (!(other instanceof UserCart))return false;
         UserCart otherMyClass = (UserCart)other;
 
-        return totalPrice == ((UserCart) other).totalPrice &&
-                tax == ((UserCart) other).tax &&
-                finalTotal == ((UserCart) other).finalTotal &&
-                cartItems.equals(((UserCart) other).cartItems) &&
-                email.equals(((UserCart) other).email) &&
-                name.equals(((UserCart) other).name);
+        return totalPrice == otherMyClass.totalPrice &&
+                tax == otherMyClass.tax &&
+                finalTotal == otherMyClass.finalTotal &&
+                cartItems.equals(otherMyClass.cartItems) &&
+                email.equals(otherMyClass.email) &&
+                name.equals(otherMyClass.name);
     }
 
     public int numberOf(int index) {
@@ -57,20 +60,21 @@ public class UserCart {
     }
 
     void reset() {
-        cartItems.clear();
+        for (CartItem item : cartItems)
+            item.clear();
         totalPrice = 0;
         finalTotal = 0;
         email = "";
         name = "";
     }
 
-    public void changeQuantity(int index, int amount, ArrayList<View> cleanupViews) {
+    public void changeQuantity(int index, int amount) {
         if (index < 0 || index >= cartItems.size())
             throw new IndexOutOfBoundsException();
         else if (amount < 0)
             throw new IllegalArgumentException("Items can't have a negative quantity.");
         else if (amount == 0)
-            removeItem(index, cleanupViews);
+            removeItem(index);
         else {
             CartItem item = cartItems.get(index);
             totalPrice += (amount - item.quantity) * item.baseItem.price;
@@ -79,36 +83,24 @@ public class UserCart {
     }
 
     public void testChangeQuantity(int index, int amount) {
-        changeQuantity(index, amount, new ArrayList<View>());
+        changeQuantity(index, amount);
     }
 
-    public boolean addItem(Item item, int quantity, String comments) {
-        if (quantity < 1)
-            throw new IllegalArgumentException("Items can't have a negative or zero quantity while being added.");
-        if (item == null)
-            throw new NullPointerException();
+    public void addItem(int index, int quantity, String comments) {
+        if (quantity < 0)
+            throw new IllegalArgumentException("Items can't have a negative quantity while being added.");
+        if (index < 0 || index >= cartItems.size())
+            throw new IndexOutOfBoundsException(String.valueOf("Index: " + index));
 
-        CartItem newItem = new CartItem(item, quantity, comments);
-        boolean inCart = false;
-        for (CartItem cartItem : cartItems) {
-            if (cartItem.baseItem == item) {
-                newItem = cartItem;
-                inCart = true;
-                break;
-            }
-        }
+        CartItem item = cartItems.get(index);
+        item.quantity += quantity;
+        item.comments = comments;
 
-        if (inCart)
-            newItem.quantity += quantity;
-        else
-            cartItems.add(newItem);
-
-        totalPrice += item.price * quantity;
-        return inCart;
+        totalPrice += item.baseItem.price * quantity;
     }
 
-    public void testAddItem(Item item, int quantity) {
-        addItem(item, quantity, "");
+    public void testAddItem(int index, int quantity) {
+        addItem(index, quantity, "");
     }
 
     public int incrementItem(int index) {
@@ -121,7 +113,7 @@ public class UserCart {
         return item.quantity;
     }
 
-    public int decrementItem(int index, ArrayList<View> cleanupViews) {
+    public int decrementItem(int index) {
         if (index < 0 || index >= cartItems.size())
             throw new IndexOutOfBoundsException();
         CartItem item = cartItems.get(index);
@@ -130,7 +122,7 @@ public class UserCart {
             throw new IllegalArgumentException("You can't have negative items.");
 
         if (--item.quantity == 0)
-            removeItem(index, cleanupViews);
+            removeItem(index);
 
         if (item.quantity >= 0)
             totalPrice -= item.baseItem.price;
@@ -139,15 +131,12 @@ public class UserCart {
     }
 
     public int testDecrementItem(int index) {
-        return decrementItem(index, new ArrayList<View>());
+        return decrementItem(index);
     }
 
-
-    public void removeItem(int index, ArrayList<View> cleanupViews) {
+    public void removeItem(int index) {
         if (index < 0 || index >= cartItems.size())
             throw new IndexOutOfBoundsException();
-        for (View view : cleanupViews)
-            view.setVisibility(View.GONE);
 
         CartItem item = cartItems.get(index);
         totalPrice -= item.quantity * item.baseItem.price;
@@ -155,7 +144,7 @@ public class UserCart {
     }
 
     public void testRemoveItem(int index) {
-        removeItem(index, new ArrayList<View>());
+        removeItem(index);
     }
 
     public int getTotalPrice() {

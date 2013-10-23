@@ -12,6 +12,12 @@ public class CartItem {
         this.comments = comments;
     }
 
+    public void clear() {
+        quantity = 0;
+        comments = "";
+    }
+
+
     public String toString() {
         StringBuilder retVal = new StringBuilder();
 
