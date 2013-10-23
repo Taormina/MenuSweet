@@ -32,7 +32,7 @@ import android.widget.Toast;
 public class LogOrder {
 	private Context context;
 	private JSONArray orderlog;
-	private String filename = "order_json.json";
+	private String filename = "order.json";
 	private String url = "http://menusweet.com/orderUpdate.php"; //sample url. doesnt actually work lol
 	private final int TIMEOUT_MILLISEC = 5000;
 
@@ -117,12 +117,13 @@ public class LogOrder {
 		}
 		return jsonarr;
 	}
-	
+
 	public boolean syncWithServer(JSONArray orders){
 		new sendOperation().execute(orders);
+		saveJSON(new JSONArray());
 		return true;
-	}	
-	
+	}
+
 	private class sendOperation extends AsyncTask<JSONArray, Void, String>{
 		@Override
 		protected String doInBackground(JSONArray... params) {
