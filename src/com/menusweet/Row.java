@@ -24,13 +24,9 @@ public class Row {
         textView.setText(item.name);
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        root.addView(textView);
-
         itemAmount = new TextView(activity);
         activity.setIntText(itemAmount, 0);
         itemAmount.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        root.addView(itemAmount);
 
         incrementButton = new ImageView(activity);
         incrementButton.setImageResource(R.drawable.add_button);
@@ -38,25 +34,24 @@ public class Row {
         incrementButton.setOnClickListener(new IncrementClickListener(itemAmount));
         incrementButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        root.addView(incrementButton);
-
         decrementButton = new ImageView(activity);
         decrementButton.setImageResource(R.drawable.decrement_button);
         decrementButton.setTag(R.id.TAG_INDEX, i);
+        decrementButton.setOnClickListener(new DecrementClickListener(itemAmount));
         decrementButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         removeButton = new ImageView(activity);
         removeButton.setImageResource(R.drawable.remove_button);
         removeButton.setTag(R.id.TAG_INDEX, i);
+        removeButton.setOnClickListener(new RemoveClickListener());
         removeButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-
-        decrementButton.setOnClickListener(new DecrementClickListener(itemAmount));
-        removeButton.setOnClickListener(new RemoveClickListener());
-
+        root.addView(textView);
+        root.addView(itemAmount);
+        root.addView(incrementButton);
         root.addView(decrementButton);
         root.addView(removeButton);
-
+        root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
         root.setVisibility(View.GONE);
     }
 

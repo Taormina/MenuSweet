@@ -57,10 +57,8 @@ public class MenuFragment extends Fragment {
 
         if (!activity.isCartEmpty()) {
             view.findViewById(R.id.empty_cart_message).setVisibility(View.GONE);
-            for (Item item : activity.items) {
-                addCartRow(item);
+            for (Item item : activity.items)
                 activity.userCart.addItem(i++, 0, "");
-            }
         }
 
         i = 0;
@@ -69,49 +67,4 @@ public class MenuFragment extends Fragment {
 
         activity.setSubtotal(view);
     }
-
-    public void addCartRow(Item item) {
-        MenuActivity activity = (MenuActivity) getActivity();
-
-        LinearLayout current = new LinearLayout(activity);
-        TextView textView, itemAmount;
-        ImageView incrementButton, removeButton, decrementButton;
-
-        textView = new TextView(activity);
-        textView.setText(item.name);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        itemAmount = new TextView(activity);
-        activity.setIntText(itemAmount, 0);
-        itemAmount.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        incrementButton = new ImageView(activity);
-        incrementButton.setImageResource(R.drawable.add_button);
-        incrementButton.setTag(R.id.TAG_INDEX, i);
-        incrementButton.setOnClickListener(new IncrementClickListener(itemAmount));
-        incrementButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        decrementButton = new ImageView(activity);
-        decrementButton.setImageResource(R.drawable.decrement_button);
-        decrementButton.setTag(R.id.TAG_INDEX, i);
-        decrementButton.setOnClickListener(new DecrementClickListener(itemAmount));
-        decrementButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        removeButton = new ImageView(activity);
-        removeButton.setImageResource(R.drawable.remove_button);
-        removeButton.setTag(R.id.TAG_INDEX, i);
-        removeButton.setOnClickListener(new RemoveClickListener());
-        removeButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        current.addView(textView);
-        current.addView(itemAmount);
-        current.addView(incrementButton);
-        current.addView(decrementButton);
-        current.addView(removeButton);
-
-        current.setVisibility(View.GONE);
-
-        i++;
-    }
-
 }

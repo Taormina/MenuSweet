@@ -3,6 +3,7 @@ package com.menusweet;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -47,7 +48,8 @@ public class MenuActivity extends FragmentActivity {
         // TODO don't you fucking dare leave this in production, do this properly later
         for (Category c : categories)
             for (Item i : c.items)
-                items.add(i);
+                if (!items.contains(i))
+                    items.add(i);
 
         userCart = new UserCart(tax, items);
         //userCart.testAddItem(first.items.get(0), 1);
@@ -78,8 +80,10 @@ public class MenuActivity extends FragmentActivity {
         } else if (rows.size() == i) {
             row = new Row(this, item.baseItem, i);
             rows.add(row);
+            LinearLayout cart = (LinearLayout) findViewById(R.id.cart);
+            cart.addView(row.getView());
         } else {
-            throw new IllegalStateException(String.valueOf(i)+","+String.valueOf(rows.size()));
+            throw new IllegalStateException(String.valueOf(i) + "," + String.valueOf(rows.size()));
         }
 
         row.setQuantity(item.quantity);
