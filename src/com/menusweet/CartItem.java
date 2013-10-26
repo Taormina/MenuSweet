@@ -35,4 +35,13 @@ public class CartItem {
 
         return retVal.toString();
     }
+    public Item getItem(){
+    	return baseItem;
+    }
+    public int getQuantity(){
+    	return quantity;
+    }
+    public String getComments(){
+    	return comments;
+    }
 }

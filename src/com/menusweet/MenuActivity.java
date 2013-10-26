@@ -1,10 +1,14 @@
 package com.menusweet;
 
+import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.menusweet.mailsender.GMailSender;
 
 import java.util.ArrayList;
 
@@ -20,7 +24,9 @@ public class MenuActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.main, new MenuFragment()).commit();
+
+        getSupportFragmentManager().beginTransaction().add(R.id.main, new FeedbackFragment()).commit();
+
 
         initialize();
     }
@@ -43,6 +49,7 @@ public class MenuActivity extends FragmentActivity {
         categories.add(suggestions);
 
         double tax = 0.07;
+
         rows = new ArrayList<Row>();
         items = new ArrayList<Item>();
         // TODO don't you fucking dare leave this in production, do this properly later
@@ -55,6 +62,17 @@ public class MenuActivity extends FragmentActivity {
         //userCart.testAddItem(first.items.get(0), 1);
         //userCart.testAddItem(first.items.get(1), 2);
         //userCart.testAddItem(second.items.get(0), 3);
+
+
+//        userCart = new UserCart(tax);
+//        userCart.testAddItem(first.items.get(0), 1);
+//        userCart.testAddItem(first.items.get(1), 2);
+//        userCart.testAddItem(second.items.get(0), 3);
+//        userCart.name = "Anthony";
+//        userCart.email = "gaeljudicium@aol.com";
+
+        //email();
+
     }
 
     public boolean isCartEmpty() {
@@ -97,11 +115,30 @@ public class MenuActivity extends FragmentActivity {
 
     }
 
-    public void email() {
+    public void email(String email, String subject, String message) {
 
+            new EmailOperation().execute(email, subject, message);
     }
 
-    public void sendFeedback() {
+    private class EmailOperation extends AsyncTask<String, Void, String> {
 
+        @Override
+        protected String doInBackground(String... params) {
+
+            String email = params[0], subject = params[1], message = params[2];
+            Resources res = getResources();
+            String ourEmail = res.getString(R.string.our_email);
+            GMailSender sender = new GMailSender(ourEmail, res.getString(R.string.password));
+            try {
+                sender.sendMail(subject,
+                    message,
+                    ourEmail,
+                    email);
+            } catch (Exception e) {
+                Log.e("SendMail", e.getMessage(), e);
+            }
+            return null;
+        }
     }
+
 }
