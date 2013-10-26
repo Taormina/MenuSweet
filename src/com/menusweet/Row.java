@@ -27,7 +27,7 @@ public class Row {
         itemAmount = new TextView(activity);
         activity.setIntText(itemAmount, 0);
         itemAmount.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        
+
         incrementButton = new ImageView(activity);
         incrementButton.setImageResource(R.drawable.add_button);
         incrementButton.setTag(R.id.TAG_INDEX, i);

@@ -6,7 +6,6 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -19,7 +18,7 @@ public class MenuFragment extends Fragment {
     public static View view;
     LinearLayout cart;
     int i = 0;
-    public MenuActivity activity;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class MenuFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-       activity = (MenuActivity) getActivity();
+        MenuActivity activity = (MenuActivity) getActivity();
 
         // Category
         ListView categoryList = (ListView) activity.findViewById(R.id.categories);
@@ -51,20 +50,8 @@ public class MenuFragment extends Fragment {
         ArrayList<Item> categoryItems = new ArrayList<Item>();
         categoryItems.addAll(activity.categories.get(0).items);
         itemList.setAdapter(new ItemArrayAdapter(activity, categoryItems));
-        
-        //when items from the list get clicked
-        itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View view, int arg2,
-					long arg3) {
-				
-				ItemDetailsFragment newItem = new ItemDetailsFragment();
-				newItem.passView(view);
-		    	newItem.show(activity.getFragmentManager(), "");
-			}
-        });
-        
-        
-			
+        itemList.setOnItemClickListener(new AddClickListener());
+
         // Cart
         cart = (LinearLayout) getActivity().findViewById(R.id.cart);
 
