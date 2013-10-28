@@ -19,7 +19,29 @@ public class Item {
     public int getPrice() {
         return price;
     }
+
+
+    public String getDescription() {
+        return description;
+    }
+
     public String getName() {
-    	return name;
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (pictureResId != item.pictureResId) return false;
+        if (price != item.price) return false;
+        if (!description.equals(item.description)) return false;
+        if (!name.equals(item.name)) return false;
+
+        return true;
+
     }
 }

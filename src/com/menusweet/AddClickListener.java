@@ -1,17 +1,21 @@
 package com.menusweet;
 
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
 
-public class AddClickListener extends ClickListener {
+public class AddClickListener implements AdapterView.OnItemClickListener {
 
-    private TextView quantity;
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        MenuActivity activity = (MenuActivity) view.getContext();
+        Item item = (Item) view.getTag(R.id.TAG_ITEM);
+        int index = activity.items.indexOf(item);
+        activity.userCart.addItem(index, 1, "");
+        activity.updateCartRow(index, activity.userCart.getItem(index));
 
-    public AddClickListener(TextView quantity) {
-      this.quantity = quantity;
-    }
-
-    public void doAction(View v) {
-        activity.setIntText(quantity, activity.userCart.incrementItem((Integer) v.getTag(R.id.TAG_INDEX)));
+        activity.setSubtotal(view.getRootView());
+        View emptyCartMessage = view.getRootView().findViewById(R.id.empty_cart_message);
+        if (emptyCartMessage.getVisibility() != View.GONE)
+            emptyCartMessage.setVisibility(View.GONE);
     }
 }
