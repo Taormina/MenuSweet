@@ -28,7 +28,7 @@ public class IntroScreenFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.menu, new CartFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main, new MenuFragment()).commit();
 
             }
         });

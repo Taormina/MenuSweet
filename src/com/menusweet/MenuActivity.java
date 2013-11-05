@@ -25,7 +25,7 @@ public class MenuActivity extends FragmentActivity {
         setContentView(R.layout.activity_menu);
 
 
-        getSupportFragmentManager().beginTransaction().add(R.id.main, new FeedbackFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.main, new IntroScreenFragment()).commit();
 
 
         initialize();
@@ -59,17 +59,8 @@ public class MenuActivity extends FragmentActivity {
                     items.add(i);
 
         userCart = new UserCart(tax, items);
-        //userCart.testAddItem(first.items.get(0), 1);
-        //userCart.testAddItem(first.items.get(1), 2);
-        //userCart.testAddItem(second.items.get(0), 3);
-
-
-//        userCart = new UserCart(tax);
-//        userCart.testAddItem(first.items.get(0), 1);
-//        userCart.testAddItem(first.items.get(1), 2);
-//        userCart.testAddItem(second.items.get(0), 3);
-//        userCart.name = "Anthony";
-//        userCart.email = "gaeljudicium@aol.com";
+        userCart.name = "Anthony";
+        userCart.email = "gaeljudicium@aol.com";
 
         //email();
 
