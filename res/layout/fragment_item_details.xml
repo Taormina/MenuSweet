@@ -15,8 +15,7 @@
         android:paddingTop="10dp"
         android:text="itemName"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ff000000"
-        android:textStyle= />
+        android:textColor="#ff000000" />
 
     <ImageView
         android:id="@+id/imageView1"
