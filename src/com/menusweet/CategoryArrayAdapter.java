@@ -29,6 +29,8 @@ public class CategoryArrayAdapter extends ArrayAdapter<Category> {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.category_row, null);
             ((TextView) convertView.findViewById(R.id.category_name)).setText(rowItem.toString());
+            ((TextView) convertView.findViewById(R.id.category_name)).setTextSize(20);
+            ((TextView) convertView.findViewById(R.id.category_name)).setBackgroundResource(R.drawable.category_background);
         }
 
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);

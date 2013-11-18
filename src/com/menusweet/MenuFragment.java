@@ -6,6 +6,7 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,7 +19,7 @@ public class MenuFragment extends Fragment {
     public static View view;
     LinearLayout cart;
     int i = 0;
-
+    public MenuActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class MenuFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        MenuActivity activity = (MenuActivity) getActivity();
+       activity = (MenuActivity) getActivity();
 
         // Category
         ListView categoryList = (ListView) activity.findViewById(R.id.categories);
@@ -46,12 +47,27 @@ public class MenuFragment extends Fragment {
         categoryList.setOnItemClickListener(new CategoryClickListener(activity.categories));
 
         // Items
-        ListView itemList = (ListView) activity.findViewById(R.id.items);
+        final ListView itemList = (ListView) activity.findViewById(R.id.items);
         ArrayList<Item> categoryItems = new ArrayList<Item>();
         categoryItems.addAll(activity.categories.get(0).items);
         itemList.setAdapter(new ItemArrayAdapter(activity, categoryItems));
-        itemList.setOnItemClickListener(new AddClickListener());
-
+        
+        //when items from the list get clicked
+        itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View view, int pos,
+					long arg3) {
+				
+				ItemDetailsFragment newItem = new ItemDetailsFragment();
+				Item item = (Item) view.getTag(R.id.TAG_ITEM);
+				
+				newItem.passView(view,item.getName(),item.getDescription());
+				
+		    	newItem.show(activity.getFragmentManager(), "");
+			}
+        });
+        
+        
+			
         // Cart
         cart = (LinearLayout) getActivity().findViewById(R.id.cart);
 
